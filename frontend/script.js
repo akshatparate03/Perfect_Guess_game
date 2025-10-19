@@ -1,6 +1,7 @@
 let gamesPlayed = 0;
 let bestScore = null;
-const BACKEND_URL = "http://127.0.0.1:5000"; // Backend URL
+// Update this with your Render backend URL after deployment
+const BACKEND_URL = "https://perfect-guess-game.onrender.com"; // Backend URL
 
 const guessInput = document.getElementById("guessInput");
 const guessBtn = document.getElementById("guessBtn");
