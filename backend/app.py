@@ -4,12 +4,30 @@ import random
 import os
 
 app = Flask(__name__)
-# CORS configuration for Netlify frontend
+
+# Production secret key
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production-12345')
+
+# Session configuration for cross-origin
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+
+# CORS configuration - Allow your Netlify domain
 CORS(app, 
-     origins=['http://localhost:5500', 'https://guessperfectnum.netlify.app/'],  # Update with your Netlify URL
-     supports_credentials=True,
-     allow_headers=['Content-Type'],
-     methods=['GET', 'POST', 'OPTIONS'])
+     resources={r"/*": {
+         "origins": [
+             "http://localhost:5500",
+             "http://127.0.0.1:5500",
+             "https://guessperfectnum.netlify.app",  # Your Netlify URL
+             "https://*.netlify.app"  # All Netlify subdomains
+         ],
+         "methods": ["GET", "POST", "OPTIONS"],
+         "allow_headers": ["Content-Type"],
+         "supports_credentials": True,
+         "expose_headers": ["Content-Type"],
+         "max_age": 3600
+     }})
 
 @app.route('/')
 def index():
@@ -86,5 +104,16 @@ def guess():
             'message': 'Please enter a valid number!'
         })
 
+# Add CORS headers to all responses
+@app.after_request
+def after_request(response):
+    origin = request.headers.get('Origin')
+    if origin:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)
