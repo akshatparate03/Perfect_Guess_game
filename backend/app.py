@@ -4,10 +4,6 @@ import random
 import os
 
 app = Flask(__name__)
-
-# Production secret key (use environment variable in production)
-app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
-
 # CORS configuration for Netlify frontend
 CORS(app, 
      origins=['http://localhost:5500', 'https://your-netlify-app.netlify.app'],  # Update with your Netlify URL
