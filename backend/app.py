@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 # CORS configuration for Netlify frontend
 CORS(app, 
-     origins=['http://localhost:5500', 'https://your-netlify-app.netlify.app'],  # Update with your Netlify URL
+     origins=['http://localhost:5500', 'https://guessperfectnum.netlify.app/'],  # Update with your Netlify URL
      supports_credentials=True,
      allow_headers=['Content-Type'],
      methods=['GET', 'POST', 'OPTIONS'])
