@@ -209,6 +209,10 @@ button:disabled {
 }
 
 @media (max-width: 600px) {
+  body {
+    min-height: 93vh;
+  }
+  
   .container {
     padding: 30px 20px;
   }
